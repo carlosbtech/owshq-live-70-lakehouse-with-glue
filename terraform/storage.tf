@@ -2,6 +2,7 @@ resource "aws_s3_bucket" "buckets" {
   count  = length(var.bucket_names)
   bucket = "${var.prefix}-${var.bucket_names[count.index]}-${var.account_id}"
 
+  force_destroy = true
   tags = local.common_tags
 }
 
