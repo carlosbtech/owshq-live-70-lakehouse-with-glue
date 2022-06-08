@@ -15,9 +15,10 @@ class FakeDataFrame():
         return self.spark.range(0,1000)
     
     def write_fake_frame(self, df):
-        return (
-            df.coalesce(1).write.mode("overwrite").format("delta").save(self.destination_path)
-        )
+        if df.rdd.getNumPartitions() >= 2:
+            return df.coalesce(1).write.mode("overwrite").format("delta").save(self.destination_path)
+        else:
+            return df.write.mode("overwrite").format("delta").save(self.destination_path)
 
     def show_history_table(self):
         return DeltaTable.forPath(self.spark, self.destination_path).history().show(truncate=False, vertical=True)
