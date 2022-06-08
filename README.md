@@ -13,4 +13,4 @@ terraform plan
 terraform apply
 ```
 
-!(aws_lakehouse_with_glue)[https://github.com/josecarlosbarbosa/owshq-live-lakehouse-with-glue/blob/main/docs/aws_lakehouse_with_glue.png]
+![aws_lakehouse_with_glue](https://github.com/josecarlosbarbosa/owshq-live-lakehouse-with-glue/blob/main/docs/aws_lakehouse_with_glue.png)
