@@ -7,7 +7,7 @@ resource "aws_glue_job" "glue_job" {
   timeout           = 5
 
   command {
-    script_location = "s3://${local.glue_bucket}/glue-etl.py"
+    script_location = "s3://${local.glue_bucket}/job/glue-etl.py"
     python_version  = "3"
   }
 
