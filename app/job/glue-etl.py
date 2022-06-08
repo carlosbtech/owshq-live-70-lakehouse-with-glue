@@ -1,4 +1,3 @@
-import os
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import (
     year, 
@@ -6,14 +5,14 @@ from pyspark.sql.functions import (
     dayofmonth, 
     hour, 
     weekofyear, 
-    date_format, 
     dayofweek, 
     udf, 
-    col
+    col,
+    row_number, 
+    monotonically_increasing_id
 )
-from pyspark.sql import functions as F
+
 from pyspark.sql import types as T
-from pyspark.sql.functions import row_number, monotonically_increasing_id
 from pyspark.sql import Window
 from datetime import datetime
 
@@ -82,7 +81,7 @@ def process_log_data(spark, input_data, output_data):
     users_table.write.mode('overwrite').format("delta").save(output_data + 'users')
 
     # create timestamp column from original timestamp column    
-    get_timestamp = F.udf(lambda x: datetime.fromtimestamp( (x/1000.0) ), T.TimestampType()) 
+    get_timestamp = udf(lambda x: datetime.fromtimestamp( (x/1000.0) ), T.TimestampType()) 
     df = df.withColumn("timestamp", get_timestamp(df.ts))
     
     # create datetime column from original timestamp column
