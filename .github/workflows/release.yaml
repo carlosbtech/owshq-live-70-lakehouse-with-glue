@@ -1,19 +1,29 @@
-name: Upload to S3
+ name: Deploy Scripts
+ on:
+   push:
+     branches:
+       - main
+ jobs:
+   deploy_scripts_s3:
+     name: Copy scripts to s3
+     runs-on: ubuntu-latest
 
-on:
-  push:
-    branches:
-      - main
+     steps:
+     - name: Checkout
+       uses: actions/checkout@v2
 
-jobs:
-  upload:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - uses: ochanje210/s3-upload-action@master
-        with:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
-          AWS_S3_BUCKET: ${{ secrets.AWS_BUCKET_NAME }}
-          SOURCE_DIR: 'app/glue-etl.py'
-          DEST_DIR: 'owshq-aws-glue-scripts-777696598735/app'
+     - name: Configure AWS credentials (dev)
+       uses: aws-actions/configure-aws-credentials@v1
+       with:
+         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+         aws-region: "us-east-2"
+
+     - name: COPY
+       uses: prewk/s3-cp-action@v2
+       with:
+        aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        source: './app'
+        dest: 's3://owshq-aws-glue-scripts-777696598735/app'
+        flags: --recursive
