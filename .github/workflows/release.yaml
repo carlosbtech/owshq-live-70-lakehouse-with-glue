@@ -17,7 +17,7 @@
        with:
          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-         aws-region: "us-east-2"
+         aws-region: ${{ secrets.AWS_REGION }}
 
      - name: COPY SCRIPT
        uses: prewk/s3-cp-action@v2
@@ -25,5 +25,5 @@
         aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         source: './app'
-        dest: 's3://owshq-aws-glue-scripts-777696598735/'
+        dest: ${{ secrets.AWS_BUCKET_NAME }}
         flags: --recursive
