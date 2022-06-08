@@ -12,6 +12,7 @@ resource "aws_glue_job" "glue_job" {
   }
 
   default_arguments = {
+    "--additional-python-modules" = "delta-spark==1.0.0"
     "--extra-jars" = "s3://owshq-aws-glue-scripts-777696598735/jars/delta-core_2.12-1.0.0.jar"
     "--conf spark.delta.logStore.class" = "org.apache.spark.sql.delta.storage.S3SingleDriverLogStore"
     "--conf spark.sql.extensions" = "io.delta.sql.DeltaSparkSessionExtension"
